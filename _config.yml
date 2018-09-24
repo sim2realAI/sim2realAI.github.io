@@ -11,7 +11,7 @@ site-twitter: #if your site has a twitter account, enter it here
 
 # Author Settings
 author: sim2realAI # add your name
-author-img: sim2realAI-photo_128x128.jpg # add your photo
+author-img: sim2realAI-photo_64x64.jpg # add your photo
 about-author: We are indexing progress in simulations to real world transfer in robot perception and control. # add description
 social-twitter: sim2realAIorg # add your Twitter handle
 social-facebook: # add your Facebook handle
