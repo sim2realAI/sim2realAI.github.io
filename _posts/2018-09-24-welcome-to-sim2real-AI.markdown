@@ -14,7 +14,7 @@ Real world is often complex and there is a huge cost involved in running experim
 * Controllability - being able to control various simulation parameters systematically and understand how they affect the simulation. 
 * Efficiency - simulators can often run much faster than real time. 
 * Variability - simulators can allow for collecting large diversity of scenarios.
-* Evaluation - provide a test bed to benchmark various algorithms.
+* Evaluation - providing a test bed to benchmark various algorithms.
 
 
 We believe simulators will continue to play a key role in helping us understand what it needs to transfer results to real world. While there is huge excitement on transferrability, it is important to critically evaluate various important aspects of simualtions *e.g.* how good are the contact models in a physics engines and what approximations are they making, how good is the rendering quality for visual perception and how can we be sure that it will transfer, what are the strengths and limitations of simulations and which simulator might be more fitting to the task, which is the fastest, to name a few.
