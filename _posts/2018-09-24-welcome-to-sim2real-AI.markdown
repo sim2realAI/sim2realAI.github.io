@@ -17,7 +17,7 @@ Real world is often complex and there is a huge cost involved in running experim
 * Evaluation - provide a test bed to benchmark various algorithms.
 
 
-We believe simulators will continue to play a key role in helping us understand what it needs to transfer results to real world. While there is huge excitement on transferrability, it is important to critically evaluate various important aspects of simualtions *e.g.* how good are the contact models in a physics engines and what approximations are they making, how good is the rendering quality for visual perception and how can we be sure that it will transfer, what are the strengths and limitations of the simulations and which simulator might be more fitting to the task, which simulator is the fastest, to name a few.
+We believe simulators will continue to play a key role in helping us understand what it needs to transfer results to real world. While there is huge excitement on transferrability, it is important to critically evaluate various important aspects of simualtions *e.g.* how good are the contact models in a physics engines and what approximations are they making, how good is the rendering quality for visual perception and how can we be sure that it will transfer, what are the strengths and limitations of simulations and which simulator might be more fitting to the task, which is the fastest, to name a few.
 
 Keeping this in mind, we thought it might be worth putting it all together on a website that can catalogue various things related to simulations and offer any suggestions on different simulators, synthetic datasets and state of the art in simulations to real world transfer. There will be occasional tutorials on rendering, physics, robotics, hardware, and SLAM.
 
