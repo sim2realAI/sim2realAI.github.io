@@ -11,7 +11,7 @@ Welcome to our website. We are indexing the progress on simulations to real worl
 Real world is often complex and there is a huge cost involved in running experiments. Moreover, collecting large scale real world data can be quite labourious. On the other hand, simulations offer various advantages
 
 * Repeatability - being able to replay the trajectory with no changes/stochasticity.
-* Controllability - being able to control various simulations parameters systematically and understand how they affec the simulation. 
+* Controllability - being able to control various simulations parameters systematically and understand how they affect the simulation. 
 * Efficiency - simulators can often run much faster than real time. 
 * Variability - simulators can allow for collecting large diversity of scenarios.
 * Evaluation - provide a test bed to benchmark various algorithms.
