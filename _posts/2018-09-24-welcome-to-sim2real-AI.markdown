@@ -8,7 +8,7 @@ img:  # Add image post (optional)
 
 Welcome to our website. We are indexing the progress on simulations to real world transfer in robot perception and control. The past few years have seen a huge interest in learning via simulations and transferring the results to real world. This is largely due to the availability of popular simulators *e.g.* physics simulators like MuJoCo, Bullet, and DART, and 3D rendering engines in Unity, UnrealEngine, and Physically Based Rendering engines.
 
-The Real world is often complex and there is a huge cost involved in running experiments. Moreover, collecting large scale real world data can be quite labourious. On the other hand, simulations offer various advantages
+The real world is often complex and there is a huge cost involved in running experiments. Moreover, collecting large scale real world data can be quite labourious. On the other hand, simulations offer various advantages
 
 * Repeatability - being able to replay the trajectory with no changes/stochasticity.
 * Controllability - being able to control various simulation parameters systematically and understand how they affect the simulation. 
