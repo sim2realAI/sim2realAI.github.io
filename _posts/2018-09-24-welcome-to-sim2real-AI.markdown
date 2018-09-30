@@ -24,12 +24,8 @@ Keeping this in mind, we thought it might be worth consolidating, characterising
 
 
 
-<!--{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
+{% highlight python %}
+Acknowledgements
+
 {% endhighlight %}
 
--->
