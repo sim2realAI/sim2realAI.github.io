@@ -18,7 +18,7 @@ The real world is often complex and there is a huge cost involved in running exp
 * Evaluation - providing a test bed to benchmark various algorithms.
 
 
-However, it is also important to understand various important aspects of simulations in the context of simulations to real world transfer *e.g.* how good are the contact models in a physics engines and what approximations are they making, how good is the rendering quality for visual perception and how can we be sure that it will transfer, what are the strengths and limitations of simulations and which simulator might be more fitting to the task and which is the fastest, to name a few.
+However, it is also important to understand various critical aspects of simulations in the context of simulations to real world transfer *e.g.* how good are the contact models in a physics engines and what approximations are they making, how good is the rendering quality for visual perception and how can we be sure that it will transfer, what are the strengths and limitations of simulations and which simulator might be more fitting to the task and which is the fastest, to name a few.
 
 Keeping this in mind, we thought it might be worth consolidating, characterising and cataloguing various things related to simulations and offer suggestions on different simulators, synthetic datasets and the state of the art in simulations to real world transfer. There will be occasional tutorials on rendering, physics, robotic kinematics and optimisation, hardware, and SLAM.
 
