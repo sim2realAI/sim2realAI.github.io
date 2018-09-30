@@ -6,7 +6,7 @@ description: Welcome blog # Add post description (optional)
 img:  # Add image post (optional)
 ---
 
-Welcome to our website. We are indexing the progress on simulations to real world transfer in robot perception and control. Motivated by the recent interest in learning via simulations and transferring the results to real world, we believe it is important to consolidate and characterise the progress now in this direction. Physics simulators like MuJoCo, Bullet, and DART, and 3D rendering engines in Unity, UnrealEngine, and Physically Based Rendering engines have played a key role in this progress and we believe simulators will continue to play a key role in helping us understand what is needed to transfer results to real world
+Welcome to our website. We are indexing the progress on simulations to real world transfer in robot perception and control. Motivated by the recent interest in learning via simulations and transferring the results to real world, we believe it is important to consolidate and characterise the progress now in this direction. Physics simulators like MuJoCo, Bullet, and DART, and 3D rendering engines in Unity, UnrealEngine, and Physically Based Rendering engines have played a substantial role in this progress and we believe simulators will continue to important in helping us understand what is needed to transfer results to real world
 
 The real world is often complex and there is a huge cost involved in running experiments. Furthermore, collecting large scale real world data can be quite labourious. Robots are expensive and break often which can slow down the iteration cycle of research. While this is not to say that real world experiments are close to impossible but simulators are appealing due to the following advantages\: 
 
