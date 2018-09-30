@@ -13,7 +13,7 @@ The real world is often complex and there is a huge cost involved in running exp
 * Repeatability - being able to replay the recorded trajectory with no changes/stochasticity --- resetting the states to exactly the same initial conditions. This is also very helpful in diagnostics and debugging.
 * Controllability - being able to control various simulation parameters systematically and understand how they affect the simulation. 
 * Scalability - it is a lot easier to scale a simulation experiment via distributed computing or high performance engineering infrastructure.
-* Efficiency - simulators can often run much faster than real time. This is extremely important factor and reduces the training time significantly.
+* Efficiency - simulators can often run much faster than real time. This is an extremely important characteristic and allows for fast iteration cycles in training / learning.
 * Variability - simulators can allow for collecting large diversity of scenarios.
 * Evaluation - providing a test bed to benchmark various algorithms.
 
