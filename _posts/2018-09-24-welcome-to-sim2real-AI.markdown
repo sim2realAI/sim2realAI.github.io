@@ -23,7 +23,8 @@ However, it is also important to understand various critical aspects of simulati
 Keeping this in mind, we thought it might be worth consolidating, characterising and cataloguing various things related to simulations and offer suggestions and constructive feedback on different simulators, synthetic datasets and the state of the art in simulations to real world transfer. There will be occasional tutorials on rendering, physics, robotic kinematics and optimisation, hardware, and SLAM.
 
 
-# Acknowledgements
+## Acknowledgements
+
 
 <!--{% highlight python %}
 Acknowledgements
