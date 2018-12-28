@@ -24,10 +24,3 @@ Keeping this in mind, we thought it might be worth consolidating, characterising
 
 
 ## Acknowledgements
-
-
-<!--{% highlight python %}
-Acknowledgements
-
-{% endhighlight %}
--->
