@@ -4,6 +4,7 @@ import operator
 from collections import OrderedDict
 
 dataset_dict = {'NIST': 30,
+                'PASCAL3D+': 79,
                 'IKEA': 219,
                 'PrincetonSB': 6670,
                 'Thingi10K': 10000,
