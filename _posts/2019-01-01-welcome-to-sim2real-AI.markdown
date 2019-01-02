@@ -24,7 +24,7 @@ However, simulators have their limitations too --- simulating complicated real w
 * What level of rendering quality do we need to able to transfer results to real world? 
 * What are the strengths and limitations of ensemble methods (*e.g.* domain randomisation)? 
 * What can simulators faithfully simulate? What are their limitations?  
-* Which simulator, given the parameterisation it uses, might be more fitting to a given task and which is the fastest?
+* Which simulator, given the parameterisation it uses (*e.g.* generalised coordinates or maximal coordinates), might be more fitting to a given task and which is the fastest?
 * How do the simulators implement things behind the scenes? What is the generative model they use? How can that be integrated with model-based methods?   
 
 Keeping this in mind, we thought it might be worth consolidating, characterising, and cataloguing various things related to simulations and offer suggestions and constructive feedback on different simulators, synthetic datasets and the state of the art in simulations to real world transfer. We hope to cover all this via series of summary posts about various datasets and de-facto methods that have shown progress in transfer and occasional tutorials and introductory posts on rendering, physics, robot kinematics and optimisation, and hardware.
