@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Inaugural blog!"
+title: "Welcome!"
 date: 2019-01-01 13:32:20 +0300
 description: Welcome blog # Add post description (optional)
 img:  # Add image post (optional)
