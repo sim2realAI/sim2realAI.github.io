@@ -27,7 +27,7 @@ However, simulators have their limitations too --- simulating complicated real w
 * Which simulator might be more fitting to the user defined task and which is the fastest?
 * How do the simulators implement things behind the scenes? What is the generative model they use? How can that be integrated with model-based methods?   
 
-Keeping this in mind, we thought it might be worth consolidating, characterising, and cataloguing various things related to simulations and offer suggestions and constructive feedback on different simulators, synthetic datasets and the state of the art in simulations to real world transfer. We hope to cover all this via series of summary posts and occasional tutorials on rendering, physics, robot kinematics and optimisation, and hardware.
+Keeping this in mind, we thought it might be worth consolidating, characterising, and cataloguing various things related to simulations and offer suggestions and constructive feedback on different simulators, synthetic datasets and the state of the art in simulations to real world transfer. We hope to cover all this via series of summary posts about various datasets and de-facto methods that have shown progress in transfer and occasional tutorials and introductory posts on rendering, physics, robot kinematics and optimisation, and hardware.
 
 
 ## Acknowledgements
