@@ -22,7 +22,7 @@ However, simulators have their limitations too --- simulating complicated real w
 
 * How good are the contact models in a physics engine and what approximations are they making?
 * What level of rendering quality do we need to able to transfer results to real world? 
-* Where do ensemble methods (*e.g.* domain randomisation) work well? Where do we need domain adaptation etc.? 
+* What are the strengths and limitations of ensemble methods (*e.g.* domain randomisation) work well? 
 * What are the strengths and limitations of simulations in general? What can they faithfully simulate? 
 * Which simulator might be more fitting to the user defined task and which is the fastest?
 * How do the simulators implement things behind the scenes? What is the generative model they use? How can that be integrated with model-based methods?   
