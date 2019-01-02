@@ -21,7 +21,7 @@ The real world is often complex and there is a huge cost involved in running exp
 However, simulators have their limitations too --- simulating complicated real world phenomenon is still an open research problem. Therefore, it is important to understand various critical aspects of simulations in the context of real world transfer *e.g.* 
 
 * How good are the contact models in a physics engine and what approximations are they making?
-* What level of rendering quality do we need to able to transfer results to real world? 
+* What level of rendering quality do we need to be able to transfer results to real world? 
 * What are the strengths and limitations of ensemble methods (*e.g.* domain randomisation)? 
 * What can simulators faithfully simulate? What are their limitations?  
 * Which simulator, given the parameterisation it uses (*e.g.* [generalised or maximal coordinates](/assets/img/GeneralisedVsMaximal.jpg) [cite](https://www.cc.gatech.edu/classes/AY2014/cs7496_fall/slides/Lagrangian.pdf)), might be more fitting to a given task and which is the fastest?
