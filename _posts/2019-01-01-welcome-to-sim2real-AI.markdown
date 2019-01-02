@@ -18,7 +18,7 @@ The real world is often complex and there is a huge cost involved in running exp
 * **Evaluation** - providing a test bed to benchmark various algorithms and characterise the performance.
 
 
-However, simulators have their limitations too --- simulating complicated real world phenomenon are still open research problems. Therefore, it is important to understand various critical aspects of simulations in the context of real world transfer *e.g.* 
+However, simulators have their limitations too --- simulating complicated real world phenomenon is still an open research problem. Therefore, it is important to understand various critical aspects of simulations in the context of real world transfer *e.g.* 
 
 * How good are the contact models in a physics engine and what approximations are they making?
 * What level of rendering quality do we need to able to transfer results to real world? 
