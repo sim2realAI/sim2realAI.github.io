@@ -30,4 +30,4 @@ Keeping this in mind, we thought it might be worth consolidating, characterising
 
 
 ## Acknowledgements
-We would like to thank David Ha, Avital Oliver, Feryal Behbahani, Miles Brundage and Arsha Nagrani for proofreading and suggestions. We would also like to thank Emo Todorov, Miles Macklin, Erwin Coumans and Karen Liu, the creators of MuJoCo, FleX, Bullet and DART respectively, who have kindly agreed to offer suggestions and directions in future, and also helping us organise the evolving landscape of simulations to real world transfer. 
+We would like to thank David Ha, Avital Oliver, Feryal Behbahani, Miles Brundage, Yevgen Chebotar and Arsha Nagrani for proofreading and suggestions. We would also like to thank Emo Todorov, Miles Macklin, Erwin Coumans and Karen Liu, the creators of MuJoCo, FleX, Bullet and DART respectively, who have kindly agreed to offer suggestions and directions in future, and also helping us organise the evolving landscape of simulations to real world transfer. 
