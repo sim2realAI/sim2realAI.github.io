@@ -24,7 +24,7 @@ The datasets have been curated either via synthesising 3D models using a 3D desi
 
 The image above shows the size of repositories that provide 3D assets and models. We observed that large majority of these repositories today contain 1M models and we believe the content (either designed by artists or automatically generated) will continue to grow with time.
 
-Below, we give a brief overview of various data formats that synthetic/real-world models are released in. These are the basic formats that have been around for a long while and it is worth understanding how these 3D models are stored and shared publicly.
+Next, we give a brief overview of various data formats that synthetic/real-world models are released in. These are the basic formats that have been around for a long while and it is worth understanding how these 3D models are stored and shared publicly.
 
 ### Data formats
 
