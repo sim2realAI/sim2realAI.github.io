@@ -61,7 +61,7 @@ The OBJ format was created by [Wavefront Technologies](https://en.wikipedia.org/
 
 <div><img align="left" src="/assets/img/2019-01-15/urdf.gif" width="25%" style="border: 0pt none; float:left; padding-right:10px; padding-bottom:10px"> In addition to the STL/OBJ formats, it is worth mentioning that most articulated objects in robotics come in URDF (Unified Robot Description Format) format. This format describes both the collision shapes as well as limits of various joints and links that the articulated may have. The figure on the left shows a robot with various joints and links animated. In addition to URDF, COLLADA (DAE) also allows articulated kinematics and dynamics but due to complexities involved in handling and managing the format, it is not very popular.
 
-While there are lots of publicly available datasets for passive objects in the form of STL/OBJ format there are no datasets that have been widely used for benchmarking with URDF format. However, for various tasks involving robot kinematics URDF is the most popular format. 
+While there are lots of publicly available datasets for passive objects in the form of STL/OBJ format there are no datasets that have been widely used for benchmarking with URDF format. However, for various tasks involving robot kinematics and dynamics URDF is the most popular format. 
 </div>
 
 
