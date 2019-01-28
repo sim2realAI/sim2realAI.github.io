@@ -16,6 +16,7 @@ The datasets have been curated either via synthesising 3D models using a 3D desi
 - [Yobi3D](https://www.yobi3d.com/) allows searching 3D models and provide links to the corresponding website where those models can be available. Not all of them are for free.
 - [Unity Asset Store](https://www.assetstore.unity3d.com/) provide 3D models that can be used within the Unity3D engine. High quality assets tend to require licensing and not available free of charge.
 - [Kujiale](https://www.kujiale.com/), an indoor design platform in China that provides 3D indoor objects as well scenes but the majority of them require licensing and are not available for free.
+- [IgnitionFuel](https://app.ignitionrobotics.org/dashboard) provides free 356 3D models with URDF, SDFs (Signed Distance Functions) as well as parameters to simulate kinematics and dynamics.
 
 
 > It is important to note that even though these models are freely available, most commercial companies cannot simply use them. In most cases, special agreements have to be made via appropriate legal channels and departments. Therefore, it is worthwhile spending time reading the license agreement file for any terms and conditions that may come with the dataset.
@@ -58,7 +59,7 @@ The OBJ format was created by [Wavefront Technologies](https://en.wikipedia.org/
 
 #### Other Formats
 
-<div><img align="left" src="/assets/img/2019-01-15/urdf.gif" width="25%" style="border: 0pt none; float:left; padding-right:10px; padding-bottom:10px"> In addition to the STL/OBJ formats, it is worth mentioning that most articulated objects in robotics come in URDF (Unified Robot Description Format) format. This format describes both the collision shapes as well as limits of various joints and links that the articulated may have. The figure on the left shows a robot with various joints and links animated. 
+<div><img align="left" src="/assets/img/2019-01-15/urdf.gif" width="25%" style="border: 0pt none; float:left; padding-right:10px; padding-bottom:10px"> In addition to the STL/OBJ formats, it is worth mentioning that most articulated objects in robotics come in URDF (Unified Robot Description Format) format. This format describes both the collision shapes as well as limits of various joints and links that the articulated may have. The figure on the left shows a robot with various joints and links animated. In addition to URDF, COLLADA (DAE) also allows articulated kinematics and dynamics but due to complexities involved in handling and managing the format, it is not very popular.
 
 While there are lots of publicly available datasets for passive objects in the form of STL/OBJ format there are no datasets that have been widely used for benchmarking with URDF format. However, for various tasks involving robot kinematics URDF is the most popular format. 
 </div>
