@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "UnrealROX"
+title: "UnrealROX: A Photorealistic Virtual Reality Environment for Robotics Simulations"
 date: 2019-02-13 13:32:20 +0100
 description: Tools for synthetic data generation # Add post description (optional)
 img:  # Add image post (optional)
