@@ -41,7 +41,7 @@ Arguably, the most attractive feature of UE4 is its capability to render photore
 <center><img src="/assets/img/2019-02-13/wooden.gif" width="49%">
 <img src="/assets/img/2019-02-13/modern.gif" width="49%"></center>
 
-The whole system was built over UE4 taking advantage of various existing features, extending certain ones with to suit their specific needs, and implementing others from scratch to devise a more efficient and cleaner project that abides to software design principles.
+The whole system was built over UE4 taking advantage of various existing features, extending certain ones to suit their specific needs, and implementing others from scratch to devise a more efficient and cleaner project that abides by software design principles.
 
 # Features
 
