@@ -51,6 +51,26 @@ After deciding on which domain parameters we want to randomize, we must decide h
    and [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf)
 
 2. **Sampling domain parameters from adaptive probability distributions**  
+   <img align="right" src="/assets/img/2019-02-28/Chebotar_etal_2018--adaptive_distr.png" width="39%" hspace="20px">
+   [Chebotar et al.](https://arxiv.org/pdf/1810.05687.pdf) presented a very promising method on how to close the sim-2-real loop by adapting the distributions from which the domain parameters are sampled depending on results from real-world rollouts (see figure to the right).
+   The main advantage is, that this approach alleviates the need for hand-tuning the distributions of the domain parameters, which is currently a significant part of the hyper-parameter search. On the other side, the adaptation requires data from the real robot which expensive.
+   For this reason, we will only focus on methods that sample from static probability distributions.
+
+3. **Applying adversarial perturbations**  
+   One could argue that technically these approaches do not fit the domain randomization category, since the perturbations are not necessarily random. Nonetheless, I think this concept is an interesting compliment to the previously mentioned sampling methods. In particular, I want to highlight the following two ideas.
+   [Mandlekar et al.](http://vision.stanford.edu/pdf/mandlekar2017iros.pdf) proposed physically plausible perturbations of the domain parameters by randomly deciding (Bernoulli experiment) when to add a rescaled gradient of the expected return w.r.t. the domain parameters. Moreover,the paper includes an ablation analysis on the effect of adding noise to the domain parameters or directly to the states.
+   [Pinto et al.](https://arxiv.org/pdf/1703.02702.pdf) suggested to add a antagonist agent whose goal is to hinder the protagonist agent (the policy to be trained) from fulfilling its task. Both agents are trained simultaneously and make up a zero-sum game.  
+   In general, adversarial approaches may provide a particularly robust policy.  However, without any further restrictions, it is always possible create scenarios in which the protagonist agent can never win, i.e., the policy will not learn the task.
+
+> Interestingly, all publications I have read so far randomize the _domain parameters_ in a per-episode fashion, i.e., once at the beginning of every rollout (excluding the adversarial approaches mentioned in the list above). Alternatively, one could randomize the parameters every time step.
+I see two reasons, why the community so far only randomizes once per rollout. First, it is harder to implement from the physics engine point of view. Second, the very frequent parameter changes are most likely detrimental to learning, because the resulting dynamics would become significantly nosier.
+
+## Quantifying the Transferability During Learning
+
+In the state-of-the-art of sim-2-real reinforcement learning, there are several algorithms which learn (robust) continuous control policies in simulation. Some of them already showed the ability to transfer from simulation to reality.
+However, all of these algorithms lack a measure of the policy's transferability and thus they just train for a given number of rollouts or transitions. Usually, this problem is bypassed by training for a "very long time" (i.e., using a "huge amount" of samples) and then testing the resulting policy on the real system. If the performance is not satisfactory, the procedure is repeated.
+
+[Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf) presented an algorithm called Simulation-based Policy Optimization with Transferability Assessment (SPOTA) which is able to directly transfer from an ensemble of source domains to an unseen target domain. The goal of SPOTA is not only to maximize the agent's expected discounted return under the influence of perturbed physics simulations, but also to provide an approximate probabilistic guarantee on the loss in terms of this performance mueasure when applying the found policy $\pi(\theta)$, a mapping from states to actions, to a different domain.
 
 We start by framing reinforcement learning problem as a _stochastic program_, i.e., maximizing the expectation of estimated discounted return $$J(\theta)$$ over the domain parameters $$\xi \sim p(\xi; \psi)$$, where $$\psi$$ are the parameters of the distribution
 
@@ -115,7 +135,7 @@ Therefore, lowering the upper confidence bound on the estimated OG $\hat{G}_n(\t
 
 > Please note, that the terminology used in this post deviates sightly from the one used in [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf).
 
-### SPOTA &mdash; Sim-2-Sim Results
+### SPOTA &mdash; Sim-to-Sim Results
 
 Preceding results on transferring policies trained with SPOTA from one simulation to another have been reported in [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf). The videos below show the performance in example scenarios side-by-side with **3 baselines**:
 
@@ -158,7 +178,6 @@ In the second experiment, we test policies trained using SPOTA, i.e., applying d
 
 > Disclaimer: despite a dead band in the servo motors' voltage commands, noisy velocity signals from the ball detection, and (minor) nonlinearities in the dynamics this stabilizing task can also be solved by tuning the gains of a PD-controller while executing real-world trials. Furthermore, after a careful parameter estimation, we are able to learn this task for the nominal system in simulation using PPO. However, the resulting policy is sensitive to model uncertainties (e.g., testing with a different ball).
 
----
 
 ## Author
 
