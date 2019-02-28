@@ -6,21 +6,6 @@ description: On the simulation optimization bias and the optimality gap in the c
 img:  # Add image post (optional)
 ---
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      processEscapes: true
-    },
-    "HTML-CSS": { fonts: ["TeX"] }
-  });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 This post is about how we can quantitatively estimate the transferability of a control policy learned from randomized simulations.
 
 Learning continuous control policies in the real world is expensive in terms of time (e.g., gathering the data) and resources (e.g., wear and tear on the robot).
@@ -208,7 +193,7 @@ Furthermore, after a careful parameter estimation, we are able to learn this tas
 
 ## Acknowledgements
 
-I want to thank Ankur Handa editing, and Michael Gienger for proofreading this post.
+I want to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
 
 ## Credits
 
