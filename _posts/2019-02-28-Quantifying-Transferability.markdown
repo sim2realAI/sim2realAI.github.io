@@ -101,13 +101,15 @@ $$
 $$
 
 to quantify how much our solution $\theta^c$, e.g. yielded by a policy search algorithm, is worse than the best solution the algorithm could have found. In general, this measure is agnostic to the fact if we are evaluating the policies in simulation or reality. Since we are discussing the sim-to-real setting, think of OG as a quantification of our solutions suboptimality in simulation.  
+
 However, computing $G(\theta^c)$ also includes an expectation over all domains. Thus, we have to approximate it from samples. Using $n$ domains, the estimated OG at our candidate solution is
 
 $$
     \hat{G}_n(\theta^c) = \max_{\theta\in\Theta} \hat{J}_n(\theta) - \hat{J}_n(\theta^c) \ge G(\theta^c).
 $$
 
-In SPOTA, an upper confidence bound on $\hat{G}_n(\theta^c)$ is used to give a probabilistic guarantee on the transferability of the policy learned in simulation. So, the results is a policy that with probability $(1-\alpha)$ does not lose more than $\beta$ in terms of return when transferred from one domain to a different domain of the same source distribution $p(\xi; \psi)$.  
+In SPOTA, an upper confidence bound on $$\hat{G}_n(\theta^c)$$ is used to give a probabilistic guarantee on the transferability of the policy learned in simulation. So, the results is a policy that with probability $(1-\alpha)$ does not lose more than $\beta$ in terms of return when transferred from one domain to a different domain of the same source distribution $p(\xi; \psi)$.  
+
 Essentially, SPOTA increases the number of domains for every iteration until the policy's upper confidence bound on the estimated OG is lower than the desired threshold $\beta$.  
 
 Let's assume everything worked out fine and we trained a policy from randomized simulations such that the upper confidence bound on $\hat{G}_n(\theta^c)$ was reduced below the desired threshold.
@@ -123,7 +125,7 @@ Therefore, lowering the upper confidence bound on the estimated OG $\hat{G}_n(\t
 
 > Please note, that the terminology used in this post deviates sightly from the one used in [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf).
 
-### SPOTA &mdash; Sim-2-Sim Results
+### SPOTA &mdash; Sim-to-Sim Results
 
 Preceding results on transferring policies trained with SPOTA from one simulation to another have been reported in [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf). The videos below show the performance in example scenarios side-by-side with **3 baselines**:
 
@@ -143,7 +145,8 @@ Finally, I want to share some _early_  results acquired on the [2 DoF Ball Balan
 
 Assume we obtained an analytical model of the dynamics and determined the parameters with some imperfections (e.g., the characteristics of the servo motors from the data sheet do not match the reality).
 
-In the first experiment, we investigate what happens if we train control policies on a slightly faulty simulator using a model-free reinforcement learning algorithm called Proximal Policy Optimization (PPO).  
+In the first experiment, we investigate what happens if we train control policies on a slightly faulty simulator using a model-free reinforcement learning algorithm called Proximal Policy Optimization (PPO). 
+ 
 **Left video**: a policy learned with PPO on a simulator with larger ball and larger plate&mdash; tested on the nominal system.  
 **Right video**: another policy learned with PPO on a simulator with higher motor as well as gear box efficiency&mdash; tested on the nominal system.  
 <center>
@@ -154,6 +157,7 @@ In the first experiment, we investigate what happens if we train control policie
 
 <br>
 In the second experiment, we test policies trained using SPOTA, i.e., applying domain randomization.  
+
 **Left video**: a policy learned with SPOTA&mdash; tested on the nominal system.  
 **Right video**: the same policy learned with SPOTA&mdash; tested with a modified ball (the ball was cut open and filled with paper, the remaining glue makes the ball roll unevenly).
 <center>
@@ -165,7 +169,6 @@ In the second experiment, we test policies trained using SPOTA, i.e., applying d
 > Disclaimer: despite a dead band in the servo motors' voltage commands, noisy velocity signals from the ball detection, and (minor) nonlinearities in the dynamics this stabilizing task can also be solved by tuning the gains of a PD-controller while executing real-world trials.  
 Furthermore, after a careful parameter estimation, we are able to learn this task for the nominal system in simulation using PPO. However, the resulting policy is sensitive to model uncertainties (e.g., testing with a different ball).
 
----
 
 ## Author
 
