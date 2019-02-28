@@ -87,4 +87,36 @@
 	<link rel="stylesheet" href="{{ "/assets/fonts/font-awesome/css/font-awesome.min.css" | prepend: site.baseurl }}">
 	<!-- Styles -->
 	<link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl }}">
+
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+                TeX: {
+                equationNumbers: {
+                autoNumber: "AMS"
+                }
+                },
+                tex2jax: {
+                inlineMath: [ ['$','$'], ['\\(', '\\)'] ],
+                displayMath: [ ['$$','$$'] ],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                }
+                });
+    </script>
+
+        <script type="text/x-mathjax-config">
+        MathJax.Hub.Queue(function(){
+                var all = MathJax.Hub.getAllJax(), i;
+                for(i = 0; i < all.length; i += 1)
+                {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+                }
+                });
+        </script>
+
+        <script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+        </script>
+
 </head>
