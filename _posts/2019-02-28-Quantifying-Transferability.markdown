@@ -173,7 +173,7 @@ Furthermore, after a careful parameter estimation, we are able to learn this tas
 
 ## Acknowledgements
 
-I want to thank Ankur Handa editing, and Michael Gienger for proofreading this post.
+I want to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
 
 ## Credits
 
