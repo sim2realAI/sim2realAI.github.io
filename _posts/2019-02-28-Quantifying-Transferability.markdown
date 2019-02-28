@@ -6,6 +6,57 @@ description: On the simulation optimization bias and the optimality gap in the c
 img:  # Add image post (optional)
 ---
 
+This post is about how we can quantitatively estimate the transferability of a control policy learned from randomized simulations.
+
+Learning continuous control policies in the real world is expensive in terms of time (e.g., gathering the data) and resources (e.g., wear and tear on the robot).
+Therefore, simulation-based policy search appears to be an appealing alternative.
+
+## Learning from Physics Simulations
+
+In general, learning from physics simulations introduces two major challenges:
+
+1. Physics engines (e.g., [Bullet](https://pybullet.org/wordpress/), [MoJoCo](http://www.mujoco.org/), or [Vortex](https://www.cm-labs.com/vortex-studio/)]) are build on models, which are always an approximation of the real world and thus **inherently inaccurate**. For the same reason, there will always be **unmodeled effects**.
+
+2. Sample-based optimization (e.g., reinforcement learning) is known to be **optimistically biased**. This means, that the optimizer will over-fit to the provided samples, i.e., optimize for the simulation and not for the real problem, which the one we actually want to solve.
+
+The first approach to make control policies transferable from simulation to the reality, also called bridging the _reality gap_, was presented by [Jakobi et al.](http://users.sussex.ac.uk/~inmanh/jakobi95noise.pdf).
+The authors showed that by adding noise to the sensors and actors while training in simulation, it is possible to yield a transferable controller. This approach has two limitations: first, the researcher has to carefully select the correct magnitude of noise for every sensor and actor, second the underlying dynamics of the system remain unchanged.
+
+## Domain Randomization
+
+One possibility to tackle the challenges mentioned in the previous section is by randomizing the simulations. The most prominent recent success using domain randomization is the robotic in-hand manipulation of physical objects, described in a [blog post from OpenAI](https://blog.openai.com/learning-dexterity/).
+
+A _domain_ is one instance of the simulator, i.e., a set of _domain parameters_ describes the current world our robot is living in. Basically, domain parameters are the quantities that we use to parametrize the simulation. This can be physics parameters like the mass and extents of an object, as well as a gearbox's efficiency, or visual features like textures camera positions.
+
+Loosely speaking, randomizing the physics parameters can be interpreted as another way of injecting noise into the simulation while learning. In contrast to simply adding noise to the sensors and actors, this approach allows to selectively express the uncertainty on one phenomenon (e.g., rolling friction).  
+**The motivation of domain randomization in the context of learning from simulations** is the idea that if the learner has seen many variations of the domain, then the resulting policy will be more robust towards modeling uncertainties and errors. Furthermore, if the learned policy is able to maintain its performance across an ensemble of domains, it is more like to transferable to the real world.
+
+### What to Randomize
+
+<img align="right" src="/assets/img/2019-02-28/Tobin_etal_2018--sim2real.jpg" width="42%" hspace="20px">
+
+A lot of research in the sim-2-real field has been focused on randomizing visual features (e.g., textures, camera properties, or lighting). Examples are the work of [Tobin et al.](https://arxiv.org/pdf/1703.06907.pdf), who trained an object detector for robot grasping (see figure to the right), or the research done by [Sadeghi and Levine](https://arxiv.org/pdf/1611.04201.pdf), where a drone learned to fly from experience gathered in visually randomized environments.
+
+In this blog post, we focus on the randomization of physics parameters (e.g., masses, centers of mass, friction coefficients, or actuator delays), which change the dynamics of the system at hand.
+Depending on the simulation environment, **the influence of some parameters can be crucial, while other can be neglected**.
+
+> To illustrate this point, we consider a ball rolling downhill on a inclined plane. In this scenario, the ball's mass as well as radius do not influence how fast the ball is rolling. So, varying this parameters while learning would be a waste of computation time.
+Note: the ball's inertia tensor (e.g., solid or hollow sphere) does have an influence.
+
+### How to Randomize
+
+After deciding on which domain parameters we want to randomize, we must decide how to do this. Possible approaches are:
+
+1. **Sampling domain parameters from static probability distributions**  
+   This approach is the most widely used of the listed. The common element between the different algorithms is that every domain parameter is randomized according to a specified distribution.
+   For example, the mechanical parts of a robot or the objects it should interact with have manufacturing tolerances, which can be used as a basis for designing the distributions.  
+   This sampling method is advantageous since it does not need any real-world samples, and the hyper-parameters (i.e., the parameters of the probability distributions) are easy to interpret. On the downside, the state-of-the-art hyper-parameter selection done by the researcher and can be potentially time-intensive.
+   Examples of this randomization strategy are for example the work by [OpenAI](https://arxiv.org/pdf/1808.00177.pdf),
+   [Rajeswaran et al.](https://arxiv.org/pdf/1610.01283.pdf),
+   and [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf)
+
+2. **Sampling domain parameters from adaptive probability distributions**  
+
 We start by framing reinforcement learning problem as a _stochastic program_, i.e., maximizing the expectation of estimated discounted return $$J(\theta)$$ over the domain parameters $$\xi \sim p(\xi; \psi)$$, where $$\psi$$ are the parameters of the distribution
 
 $$
