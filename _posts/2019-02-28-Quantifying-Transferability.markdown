@@ -141,10 +141,11 @@ Preceding results on transferring policies trained with SPOTA from one simulatio
 * **TRPO** without domain randomization (implementation from [Duan et al.](https://arxiv.org/pdf/1604.06778.pdf))
 * **LQR** applying optimal control for the system linearized around the goal state (an equilibrium)
 
-<iframe width="403" height="452" src="https://www.youtube.com/embed/RQ7zq_bcv_k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<center>
+<iframe width="450" height="452" src="https://www.youtube.com/embed/RQ7zq_bcv_k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<iframe width="403" height="452" src="https://www.youtube.com/embed/ORi9sjhs_tw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+<iframe width="450" height="452" src="https://www.youtube.com/embed/ORi9sjhs_tw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
 ### SPOTA &mdash; Sim-to-Real Results
 
 Finally, we want to share some _early_  results acquired on the [2 DoF Ball Balancer from Quanser](https://www.quanser.com/products/2-dof-ball-balancer/). Here, the task is to stabilize a ball at the center of the plate. The device receives voltage commands for the two motors and yields measurements of the ball position (2D relative to the plate) as well as the motors' shaft angular positions (relative to their initial position). Including the velocities derived from the position signals, the system has a 2-dim continuous action space and a 8-dim continuous observation space.
