@@ -141,11 +141,9 @@ Preceding results on transferring policies trained with SPOTA from one simulatio
 * **TRPO** without domain randomization (implementation from [Duan et al.](https://arxiv.org/pdf/1604.06778.pdf))
 * **LQR** applying optimal control for the system linearized around the goal state (an equilibrium)
 
-<center>
-<iframe width="603" height="452" src="https://www.youtube.com/embed/RQ7zq_bcv_k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="403" height="452" src="https://www.youtube.com/embed/RQ7zq_bcv_k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<iframe width="603" height="452" src="https://www.youtube.com/embed/ORi9sjhs_tw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</center>
+<iframe width="403" height="452" src="https://www.youtube.com/embed/ORi9sjhs_tw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### SPOTA &mdash; Sim-to-Real Results
 
