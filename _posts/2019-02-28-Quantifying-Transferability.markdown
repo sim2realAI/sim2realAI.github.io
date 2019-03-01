@@ -57,13 +57,13 @@ After deciding on which domain parameters we want to randomize, we must decide h
    For this reason, we will only focus on methods that sample from static probability distributions.
 
 3. **Applying adversarial perturbations**  
-   One could argue that technically these approaches do not fit the domain randomization category, since the perturbations are not necessarily random. Nonetheless, I think this concept is an interesting compliment to the previously mentioned sampling methods. In particular, I want to highlight the following two ideas.
+   One could argue that technically these approaches do not fit the domain randomization category, since the perturbations are not necessarily random. Nonetheless, we think this concept is an interesting compliment to the previously mentioned sampling methods. In particular, we want to highlight the following two ideas.
    [Mandlekar et al.](http://vision.stanford.edu/pdf/mandlekar2017iros.pdf) proposed physically plausible perturbations of the domain parameters by randomly deciding (Bernoulli experiment) when to add a rescaled gradient of the expected return w.r.t. the domain parameters. Moreover,the paper includes an ablation analysis on the effect of adding noise to the domain parameters or directly to the states.
    [Pinto et al.](https://arxiv.org/pdf/1703.02702.pdf) suggested to add a antagonist agent whose goal is to hinder the protagonist agent (the policy to be trained) from fulfilling its task. Both agents are trained simultaneously and make up a zero-sum game.  
    In general, adversarial approaches may provide a particularly robust policy.  However, without any further restrictions, it is always possible create scenarios in which the protagonist agent can never win, i.e., the policy will not learn the task.
 
-> Interestingly, all publications I have read so far randomize the _domain parameters_ in a per-episode fashion, i.e., once at the beginning of every rollout (excluding the adversarial approaches mentioned in the list above). Alternatively, one could randomize the parameters every time step.
-I see two reasons, why the community so far only randomizes once per rollout. First, it is harder to implement from the physics engine point of view. Second, the very frequent parameter changes are most likely detrimental to learning, because the resulting dynamics would become significantly nosier.
+> Interestingly, most recent work is focussed on randomising the _domain parameters_ in a per-episode fashion, i.e., once at the beginning of every rollout (excluding the adversarial approaches mentioned in the list above). Alternatively, one could randomize the parameters every time step.
+We believe there could be few reasons to randomize once per rollout. First, it is harder to implement from the physics engine point of view. Second, the very frequent parameter changes are most likely detrimental to learning, because the resulting dynamics would become significantly nosier.
 
 ## Quantifying the Transferability During Learning
 
@@ -151,7 +151,7 @@ Preceding results on transferring policies trained with SPOTA from one simulatio
 
 ### SPOTA &mdash; Sim-to-Real Results
 
-Finally, I want to share some _early_  results acquired on the [2 DoF Ball Balancer from Quanser](https://www.quanser.com/products/2-dof-ball-balancer/). Here, the task is to stabilize a ball at the center of the plate. The device receives voltage commands for the two motors and yields measurements of the ball position (2D relative to the plate) as well as the motors' shaft angular positions (relative to their initial position). Including the velocities derived from the position signals, the system has a 2-dim continuous action space and a 8-dim continuous observation space.
+Finally, we want to share some _early_  results acquired on the [2 DoF Ball Balancer from Quanser](https://www.quanser.com/products/2-dof-ball-balancer/). Here, the task is to stabilize a ball at the center of the plate. The device receives voltage commands for the two motors and yields measurements of the ball position (2D relative to the plate) as well as the motors' shaft angular positions (relative to their initial position). Including the velocities derived from the position signals, the system has a 2-dim continuous action space and a 8-dim continuous observation space.
 
 Assume we obtained an analytical model of the dynamics and determined the parameters with some imperfections (e.g., the characteristics of the servo motors from the data sheet do not match the reality).
 
@@ -185,7 +185,7 @@ In the second experiment, we test policies trained using SPOTA, i.e., applying d
 
 ## Acknowledgements
 
-I want to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
+W would like to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
 
 ## Credits
 
