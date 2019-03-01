@@ -122,9 +122,7 @@ $$
 
 In SPOTA, an upper confidence bound on $\hat{G}_n(\theta^c)$ is used to give a probabilistic guarantee on the transferability of the policy learned in simulation. So, the results is a policy that with probability $(1-\alpha)$ does not lose more than $\beta$ in terms of return when transferred from one domain to a different domain of the same source distribution $p(\xi; \psi)$. Essentially, SPOTA increases the number of domains for every iteration until the policy's upper confidence bound on the estimated OG is lower than the desired threshold $\beta$.  
 
-Let's assume everything worked out fine and we trained a policy from randomized simulations such that the upper confidence bound on $\hat{G}_n(\theta^c)$ was reduced below the desired threshold.
-Now, the key question is if this property actually contributes to our goal of obtaining a low Simulation Optimization Bias (SOB).  
-The relation between the OG and and the SOB can be written as
+Let's assume everything worked out fine and we trained a policy from randomized simulations such that the upper confidence bound on $\hat{G}_n(\theta^c)$ was reduced below the desired threshold. Now, the key question is if this property actually contributes to our goal of obtaining a low Simulation Optimization Bias (SOB).  The relation between the OG and and the SOB can be written as
 
 $$
     \mathrm{b}\left[ \hat{J}_n(\theta^{\star}_n) \right] = \mathbb{E}_\xi \left[ \hat{G}_n(\theta^c) \right]- G(\theta^c)
