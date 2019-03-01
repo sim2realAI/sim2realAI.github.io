@@ -52,7 +52,7 @@ After deciding on which domain parameters we want to randomize, we must decide h
 
 2. **Sampling domain parameters from adaptive probability distributions**  
    <img align="right" src="/assets/img/2019-02-28/Chebotar_etal_2018--adaptive_distr.png" width="39%" hspace="20px">
-   [Chebotar et al.](https://arxiv.org/pdf/1810.05687.pdf) presented a very promising method on how to close the sim-2-real loop by adapting the distributions from which the domain parameters are sampled depending on results from real-world rollouts (see figure to the right).
+   [Chebotar et al.](https://arxiv.org/pdf/1810.05687.pdf) presented a very promising method on how to close the sim-to-real loop by adapting the distributions from which the domain parameters are sampled depending on results from real-world rollouts (see figure to the right).
    The main advantage is, that this approach alleviates the need for hand-tuning the distributions of the domain parameters, which is currently a significant part of the hyper-parameter search. On the other side, the adaptation requires data from the real robot which expensive.
    For this reason, we will only focus on methods that sample from static probability distributions.
 
@@ -67,7 +67,7 @@ We believe there could be few reasons to randomize once per rollout. First, it i
 
 ## Quantifying the Transferability During Learning
 
-In the state-of-the-art of sim-2-real reinforcement learning, there are several algorithms which learn (robust) continuous control policies in simulation. Some of them already showed the ability to transfer from simulation to reality.
+In the state-of-the-art of sim-to-real reinforcement learning, there are several algorithms which learn (robust) continuous control policies in simulation. Some of them already showed the ability to transfer from simulation to reality.
 However, all of these algorithms lack a measure of the policy's transferability and thus they just train for a given number of rollouts or transitions. Usually, this problem is bypassed by training for a "very long time" (i.e., using a "huge amount" of samples) and then testing the resulting policy on the real system. If the performance is not satisfactory, the procedure is repeated.
 
 [Muratore et al.](https://www.ias.informatik.tu-darmstadt.de/uploads/Team/FabioMuratore/Muratore_Treede_Gienger_Peters--SPOTA_CoRL2018.pdf) presented an algorithm called Simulation-based Policy Optimization with Transferability Assessment (SPOTA) which is able to directly transfer from an ensemble of source domains to an unseen target domain. The goal of SPOTA is not only to maximize the agent's expected discounted return under the influence of perturbed physics simulations, but also to provide an approximate probabilistic guarantee on the loss in terms of this performance mueasure when applying the found policy $\pi(\theta)$, a mapping from states to actions, to a different domain.
