@@ -12,7 +12,7 @@ This post is about how we can quantitatively estimate the transferability of a c
 
 In general, learning from physics simulations introduces two major challenges:
 
-1. Physics engines (e.g., [Bullet](https://pybullet.org/wordpress/), [MoJoCo](http://www.mujoco.org/), or [Vortex](https://www.cm-labs.com/vortex-studio/)]) are build on models, which are always an approximation of the real world and thus **inherently inaccurate**. For the same reason, there will always be **unmodeled effects**.
+1. Physics engines (e.g., [Bullet](https://pybullet.org/wordpress/), [MoJoCo](http://www.mujoco.org/), or [Vortex](https://www.cm-labs.com/vortex-studio/)) are build on models, which are always an approximation of the real world and thus **inherently inaccurate**. For the same reason, there will always be **unmodeled effects**.
 
 2. Sample-based optimization (e.g., reinforcement learning) is known to be **optimistically biased**. This means, that the optimizer will over-fit to the provided samples, i.e., optimize for the simulation and not for the real problem, which the one we actually want to solve.
 
@@ -182,7 +182,7 @@ In the second experiment, we test policies trained using SPOTA, i.e., applying d
 
 ## Acknowledgements
 
-W would like to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
+We would like to thank Ankur Handa for editing and Michael Gienger for proofreading this post.
 
 ## Credits
 
