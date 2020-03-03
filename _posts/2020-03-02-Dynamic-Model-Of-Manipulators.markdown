@@ -20,7 +20,7 @@ where
 - $$\ddot q$$ is the acceleration of $$q$$,
 - $$M(q)$$ is the $$n \times n$$ generalised inertia matrix,
 - $$C(q, \dot q)$$ is $$n \times n$$ matrix and $$C(q, \dot q) \dot q$$ is $$n \times 1$$ vector of centripetal and coriolis terms,
-- $$g(q, \dot q)$$ is $$n \times 1$$ vector of gravity terms, and
+- $$g(q)$$ is $$n \times 1$$ vector of gravity terms, and
 - $$\tau $$ is $$n \times 1$$ vector of joint torques.
 
 This equation provides the relation between the applied forces/torques and the resulting motion of a manipulator. Similar to kinematics, it is also possible to define two dynamics "models":
