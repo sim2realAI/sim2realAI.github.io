@@ -300,7 +300,7 @@ Ankur Handa
 
 ## Acknowledgements
 
-We'd like to thank Erwin Coumans for minor corrections and suggestions.
+We'd like to thank Erwin Coumans for typos and suggestions.
 
 ## Bibliography
 
