@@ -298,6 +298,9 @@ $$g_k$$ represents the torque generated on joint $$k$$ by the gravity force acti
 
 Ankur Handa 
 
+## Acknowledgements
+
+We'd like to thank Erwin Coumans for minor corrections and suggestions.
 
 ## Bibliography
 
