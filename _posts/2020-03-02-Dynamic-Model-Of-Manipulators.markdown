@@ -163,7 +163,7 @@ Assuming the end-effector frame is denoted by $$n+1$$, the velocity of the end-e
 
 $$ \mathbf{v}_{bk} = \sum_{k=1}^{n} \boldsymbol{\omega}_{bk} \times \mathbf{r}_{k(k+1)} $$
 
-Let us denote $$z_k$$ to be the axis of rotation of joint $$k$$. We can rewrite the angular velocity of joint $$k$$ wrt to $$k-1$$ as 
+Let us denote $$\mathbf{z}_k$$ to be the axis of rotation of joint $$k$$. We can rewrite the angular velocity of joint $$k$$ wrt to $$k-1$$ as 
 
 $$ \boldsymbol{\omega}_{(k-1)k} = \mathbf{z}_k \dot{q}_k$$ 
 
@@ -215,7 +215,7 @@ $$
 \end{eqnarray*}
 $$
 
-The $$J_{bi}$$ denotes the Jacobian of the $$i^{th}$$ link with respect to the base.
+The $$\mathbf{J}_{bi}$$ denotes the Jacobian of the $$i^{th}$$ link with respect to the base.
 
 ## Computing the Potential Energy 
 A rigid body under the influence of gravity $$g$$ has a potential energy. For any generic link $$i$$ of an n-dof manipulator, it can be expressed as:
