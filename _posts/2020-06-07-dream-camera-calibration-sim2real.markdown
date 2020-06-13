@@ -10,35 +10,71 @@ img:  # Add image post (optional)
 
 # DREAM: Camera Calibration without Fiducial Markers
 
-
+DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulator in an input RGB image. The second stages uses the detected keypoints along with the camera intrinsics and robot proprioception to estimate the camera's pose with respect to the manipulator. Interestingly, the first stage involes two-dimensional inference, whereas the second involves three-dimensional inference. 
 
 <!-- <img align="right" src="/assets/img/2019-02-28/Tobin_etal_2018--sim2real.jpg" width="42%" hspace="20px"> -->
 
+### Stage 1: Keypoint Detection (TBD name, diff from below)
+
+The output is the $$k$$ keypoints, where $$N_k$$ is the number of keypoints used.
+
+### Stage 2: Pose Estimation from PnP
+
+The output is $$T$$. This output is suitable for camera calibration, or other uses (?).
+
+
+
 # Keypoint Detection
 
-TBD
-
-## Training Images
+This post will focus on the first stage, and how we transfer keypoint detection from sim2real with only synthetic data.
 
 TBD
+
+## Synthetic Data Generation
+
+Mention 
+
+### Training Image Examples
+
+Labels - mention training directly
+
+## Domain Randomization
+
+-> what types of domain randomization we used
+
+## Image Augmentation
+
+Adding domain randomization to the scene...
 
 ## Images
 
 TBD
 
+## Limitations and Future Work
+
+- Only designed for one manipulator, but multiple-manipulators can be deconflicted a la DOPE (cite)
+- Keypoint jitter
+- Not all keypoints are equally useful for PNP
+
 # Lessons Learned
 
-TBD
+Transferring robot perception to reality from only synthetic images is not trivial. Through this work, we provide the following lessons learned for other researchers seeking to transfer robot perception algorithms to reality from only synthetic images.
 
-# Open Questions
+1. **Photorealistic textures help.** *TBD*
 
-How many images are enough?
+2. **Judicious restriction of data will help.** *Mention Baxter camera angles, etc*
+
+3. **Interpretability of belief maps.** Originally, we explored the idea of not training belief maps directly, and instead, let the network learn what representation would be best. For this, we added a softmax layer at the end of the network, and used the keypoint position itself as the training label (instead of the belief map). 
+
+<!-- # Open Questions
+
+How many images are enough? -->
 
 # Code and Documentation
 
-Our code is available here: [TBD](TBD). We have released pre-trained models for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter. These models and the datasets we used to quantify our results are available at the [NVIDIA project site](TBD).
+The DREAM code is available here: [TBD](TBD). We have also released pre-trained models for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter. These models and the datasets we used to quantify our results are available at the [NVIDIA project site](TBD).
 
-We encourage you to try our approach the next time you need to calibrate your RGB camera for your manipulation experiments.
+We encourage roboticists to lose the fiducial marker and try our approach the next time you need to calibrate your camera for your manipulation tasks.
 
 # Authors
 
