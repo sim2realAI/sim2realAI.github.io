@@ -22,12 +22,12 @@ This post describes an approach to camera calibration without fiducial markers t
 <!-- ## A DREAM of Better Camera Calibration -->
 ## An Overview of DREAM
 
-DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulator in an input RGB image. The second stages uses the detected keypoints along with the camera intrinsics and robot proprioception to estimate the camera's pose with respect to the manipulator. The first stage involves two-dimensional inference, whereas the second stage involves three-dimensional inference. Our work is inspired by DOPE: Deep Object Pose Estimation (Tremblay et al.).
+DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulator in an input RGB image. The second stage uses the detected keypoints along with the camera intrinsics and robot proprioception to estimate the camera's pose with respect to the manipulator. The first stage involves two-dimensional inference, whereas the second stage involves three-dimensional inference. Our work is inspired by DOPE: Deep Object Pose Estimation (Tremblay et al.).
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_pipeline.png" width="100%">
 *The DREAM pipeline. Stage 1 consists of the first four steps shown in this diagram. Stage 2 is the last step, which outputs the camera transform.*
 
-DREAM is a great example of an approach that is enabled by deep learning that _also_ leverages classical algorithms. As an alternative to directly regressing to pose, such as in PoseCNN (Xiang et al.), vision-based geometry algorithms, such as perspective-n-point (PnP), provide a principled method for estimating pose from keypoint correspondences if the camera intrinsics are available, as in our case. Therefore, we need not apply deep learning to the entire pipeline to regress directly to pose, which has the risk of "baking in" the camera intrinsics and limits how well the algorithm generalizes to other cameras. Geometric algorithms do not have this problem and will transfer well to other cameras. (In fact, for our work, we demonstrated this for three different cameras.) Thus, we utilize deep learning for what it's excellent at --- image detection --- and the rest of the problem is thereafter solved using a geometric algorithm.
+DREAM is an approach that is enabled by deep learning while _also_ leveraging classical algorithms. As an alternative to directly regressing to pose, such as in PoseCNN (Xiang et al.), vision-based geometry algorithms, such as perspective-n-point (PnP), provide a principled method for estimating pose from keypoint correspondences if the camera intrinsics are available, as in our case. Therefore, we need not apply deep learning to the entire pipeline to regress directly to pose, which has the risk of "baking in" the camera intrinsics and limits how well the algorithm generalizes to other cameras. Geometric algorithms do not have this problem and will transfer well to other cameras. (In fact, for our work, we demonstrated this for three different cameras.) Thus, we utilize deep learning for what it's excellent at --- image detection --- and the rest of the problem is thereafter solved using a geometric algorithm.
 
 This post will largely focus on the first stage, and how we achieved sim2real transfer for keypoint detection using only synthetic data.
 
@@ -43,7 +43,7 @@ DREAM requires the keypoints to be specified by the user at training time. In ou
 
 This stage estimates the camera-to-robot pose using the keypoints detected in the first stage. This pose is equivalent to $$^{R}_{C} T$$, the transform that relates the camera pose to the robot pose. Finding this pose is equivalent to solving the camera calibration problem.
 
-Essentially, this stage is framed as solving a **Perspective-n-Point (PnP)** problem. In other words, given the camera intrinsics and point correspondences (i.e., a set of image keypoints and their corresponding positions in three dimensions), find the camera pose which best explains these correspondences (Szeliski). We utilize the Efficient PnP (Lepetit et al.) implementation that is available in [OpenCV](https://opencv.org/) plus a one-step refinement.
+Essentially, this stage is framed as solving a **Perspective-n-Point (PnP)** problem. In other words, given the camera intrinsics and point correspondences (i.e., a set of image keypoints and their corresponding positions in three dimensions), find the camera pose which best explains these correspondences. We utilize the Efficient PnP (Lepetit et al.) implementation that is available in [OpenCV](https://opencv.org/) plus a one-step refinement.
 
 To solve this, we need (in addition to the detected keypoints) the camera intrinsics and the three-dimensional positions of the keypoints. For our work, we used the intrinsics as published by the camera in use. The three-dimensional positions of the keypoints are obtained from the robot forward kinematics.
 
@@ -58,7 +58,7 @@ We added robot control to an internal version of [NDDS](https://github.com/NVIDI
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_panda.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_kuka.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_baxter.png" width="100%">
-*Synthetic, domain-randomized images for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators. Note that keypoints are not always visible.*
+*Synthetic, domain-randomized images for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators.*
 
 ### Domain Randomization
 
@@ -169,7 +169,7 @@ We highly encourage roboticists to pass on fiducial markers and try our approach
 
 ## Acknowledgments
 
-We'd like to thank Ankur Handa, *TBD*, and *TBD* for their help with editing and proofreading this post.
+We'd like to thank Ankur Handa, Jonathan Tremblay, and Stan Birchfield for their help with editing and proofreading this post.
 
 We'd also like to thank our DREAM coauthors and collaborators --- particularly, [Jonathan Tremblay](https://research.nvidia.com/person/jonathan-tremblay) and [Stan Birchfield](https://research.nvidia.com/person/stan-birchfield) -- without whom this work would not have been possible. (Teamwork makes the DREAM work!)
 
@@ -180,8 +180,6 @@ Timothy E. Lee, Jonathan Tremblay, Thang To, Jia Cheng, Terry Mosier, Oliver Kro
 Jonathan Tremblay, Thang To, Balakumar Sundaralingam, Yu Xiang, Dieter Fox, and Stan Birchfield. "Deep Object Pose Estimation for Semantic Robotic Grasping of Household Objects." _Conference on Robot Learning (CoRL)_, 2018.
 
 Yu Xiang, Tanner Schmidt, Venkatraman Narayanan, and Dieter Fox. "PoseCNN: A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes." _Robotics: Science and Systems (RSS)_, 2018.
-
-Richard Szeliski. _Computer Vision: Algorithms and Applications._ Springer, 2010.
 
 Vincent Lepetit, Francesc Moreno-Noguer, and Pascal Fua. "EPnP: An Accurate O(n) Solution to the PnP Problem." _International Journal of Computer Vision (IJCV)_, Vol. 81, No. 2, 2009.
 
