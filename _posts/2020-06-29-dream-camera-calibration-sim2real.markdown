@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DREAM: Camera Calibration without Fiducial Markers through Sim2Real Keypoint Detection"
-date: 2020-06-07 00:00:00 +0000 #13:32:20 +0100  -- date TBD
+date: 2020-06-29 12:00:00 +0000
 description: Sim2real keypoint detection for deep camera calibration using DREAM # Add post description (optional)
 img:  # Add image post (optional)
 ---
@@ -16,7 +16,7 @@ This post describes an approach to camera calibration without fiducial markers t
 
 <!-- # DREAM: Camera Calibration without Fiducial Markers -->
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_panda_reaching_frame.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_reaching_frame.png" width="100%">
 *DREAM output for the Franka Panda manipulator. Left: keypoint detections with belief map overlay. Right: DREAM as camera calibration. Keypoint frames are projected into the image using the camera pose estimate from DREAM.*
 
 <!-- ## A DREAM of Better Camera Calibration -->
@@ -24,7 +24,7 @@ This post describes an approach to camera calibration without fiducial markers t
 
 DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulator in an input RGB image. The second stages uses the detected keypoints along with the camera intrinsics and robot proprioception to estimate the camera's pose with respect to the manipulator. The first stage involves two-dimensional inference, whereas the second stage involves three-dimensional inference. Our work is inspired by DOPE: Deep Object Pose Estimation (Tremblay et al.).
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_pipeline.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_pipeline.png" width="100%">
 *The DREAM pipeline. Stage 1 consists of the first four steps shown in this diagram. Stage 2 is the last step, which outputs the camera transform.*
 
 DREAM is a great example of an approach that is enabled by deep learning that _also_ leverages classical algorithms. As an alternative to directly regressing to pose, such as in PoseCNN (Xiang et al.), vision-based geometry algorithms, such as perspective-n-point (PnP), provide a principled method for estimating pose from keypoint correspondences if the camera intrinsics are available, as in our case. Therefore, we need not apply deep learning to the entire pipeline to regress directly to pose, which has the risk of "baking in" the camera intrinsics and limits how well the algorithm generalizes to other cameras. Geometric algorithms do not have this problem and will transfer well to other cameras. (In fact, for our work, we demonstrated this for three different cameras.) Thus, we utilize deep learning for what it's excellent at --- image detection --- and the rest of the problem is thereafter solved using a geometric algorithm.
@@ -55,9 +55,9 @@ Deep learning requires data --- _lots_ of data. Fortunately, synthetic data are 
 
 We added robot control to an internal version of [NDDS](https://github.com/NVIDIA/Dataset_Synthesizer), the NVIDIA Deep learning Dataset Synthesizer, to generate our training data. Below are some synthetic image examples from NDDS that are suitable for training the network.
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_synth_dr_panda.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_synth_dr_kuka.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_synth_dr_baxter.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_panda.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_kuka.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_baxter.png" width="100%">
 *Synthetic, domain-randomized images for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators. Note that keypoints are not always visible.*
 
 ### Domain Randomization
@@ -79,7 +79,7 @@ Image augmentation provides image-level noise to increase network robustness and
 
 <!-- ### Example Photorealistic Images
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_synth_photo_mosaic.png" width="100%"> -->
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_photo_mosaic.png" width="100%"> -->
 
 ## Sim2Real Keypoint Detection
 
@@ -91,9 +91,9 @@ What should these belief maps look like? Similar to DOPE, we define the belief m
 
 Below are some examples of training data for the robots we trained for ICRA. Our network also allows the belief map output resolution to be specified via the decoder resolution. The Panda and Baxter belief maps below are for a quarter "Q" resolution, whereas the iiwa7 belief maps use a half "H" resolution.
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_panda_synth_train.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_kuka_synth_train.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_baxter_synth_train.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_synth_train.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_kuka_synth_train.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_baxter_synth_train.png" width="100%">
 *Training data examples for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators. Left: RGB image as network input. Right: keypoint belief maps (shown here as flattened) as network training label.*
 
 ### Network Inference: Interpreting Belief Maps
@@ -104,9 +104,9 @@ Although the network regresses to belief maps, PnP doesn't operate on these beli
 
 Below are examples of our trained keypoint detector working on both synthetic and real images. The same network is used for both the left and right images, demonstrating sim2real perceptual transfer.
 
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_panda_sim2real_kp.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_kuka_sim2real_kp.png" width="100%">
-<img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_baxter_sim2real_kp.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_sim2real_kp.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_kuka_sim2real_kp.png" width="100%">
+<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_baxter_sim2real_kp.png" width="100%">
 *Sim2real transfer for keypoint detection for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulator. Left: synthetic input image. Right: real input image. In both cases, detected keypoints (shown in red) were found from the overlaid belief maps. When available, ground truth keypoints are shown in green.*
 
 <!-- ## Putting it all together: DREAM as Camera Calibration -->
@@ -118,12 +118,12 @@ Below is a video from one of the real datasets we have released that demonstrate
 
 <!-- As we show in our paper, the result -->
 
-<!-- <img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_synth_dr_mosaic.png" width="100%" hspace="20px"> -->
+<!-- <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_mosaic.png" width="100%" hspace="20px"> -->
 
-<!-- <img align="center" src="/assets/img/2020-06-10/Lee_etal_2020_dream_panda_reaching_viz.gif" width="100%" hspace="20px"> -->
+<!-- <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_reaching_viz.gif" width="100%" hspace="20px"> -->
 
 <center>
-<video width="100%" src="/assets/img/2020-06-10/Lee_etal_2020_dream_panda_reaching_viz.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen muted loop controls></video>
+<video width="100%" src="/assets/vid/2020-06-29/Lee_etal_2020_dream_panda_reaching_viz.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen muted loop controls></video>
 DREAM results for a portion of the Panda-3Cam: RealSense dataset. Left: keypoint detections with belief map overlay. Right: projection of keypoint frames using the camera pose estimate from DREAM as the camera calibration solution. 
 </center>
 
