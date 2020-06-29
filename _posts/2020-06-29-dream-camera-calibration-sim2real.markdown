@@ -6,20 +6,11 @@ description: Sim2real keypoint detection for deep camera calibration using DREAM
 img:  # Add image post (optional)
 ---
 
-<!-- *Preamble TBD*.  -->
-
-<!-- Do you wish there was a better way of doing camera calibration for vision-based manipulation without needing fiducial markers? 
-
-Me too. So, towards that goal, my collaborators at NVIDIA and I created DREAM -- single-image camera pose estimation using deep learning. -->
-
 This post describes an approach to camera calibration without fiducial markers that combines deep-learning-based keypoint detection with a principled, geometric algorithm to provide a camera-to-robot pose estimate from a single RGB image. Our approach is facilitated by sim2real transfer: we train our keypoint detector using only synthetic images. Our approach, which is detailed further in our [paper](https://arxiv.org/abs/1911.09231) published at ICRA 2020, is called **DREAM:** **D**eep **R**obot-to-camera **E**xtrinsics for **A**rticulated **M**anipulators. Our approach provides pose estimates that are comparable to classic hand-eye calibration, the standard in practice for camera calibration. Code, datasets, pre-trained models, and a ROS node for DREAM are [publicly available](https://github.com/NVlabs/DREAM).
-
-<!-- # DREAM: Camera Calibration without Fiducial Markers -->
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_reaching_frame.png" width="100%">
 *DREAM output for the Franka Emika Panda manipulator. Left: keypoint detections with belief map overlay. Right: DREAM as camera calibration. Keypoint frames are projected into the image using the camera pose estimate from DREAM.*
 
-<!-- ## A DREAM of Better Camera Calibration -->
 ## An Overview of DREAM
 
 DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulator in an input RGB image. The second stage uses the detected keypoints along with the camera intrinsics and robot proprioception to estimate the camera's pose with respect to the manipulator. The first stage involves two-dimensional inference, whereas the second stage involves three-dimensional inference. Our work is inspired by DOPE: Deep Object Pose Estimation (Tremblay et al.).
@@ -37,8 +28,6 @@ This stage detects manipulator **keypoints** within a single RGB image. Keypoint
 
 DREAM requires the keypoints to be specified by the user at training time. In our work, keypoints were chosen at the positions of the joints based on the robot URDF (Unified Robot Description Format) model. In this case, the number of keypoints will range from 7 to about 20, depending on the model. In principle, these keypoints can exist anywhere on the robot --- including "inside" the robot, as was the case for the DREAM models that were trained for ICRA. Additional keypoints can be added to provide slightly better results in terms of accuracy (with diminishing returns) and robustness, particularly when some keypoints are occluded or otherwise not detected.
 
-<!-- Other approaches include defining the keypoints at the bounding box vertices (as in DOPE). However, from robot proprioception, we know where the keypoints are, so defining them on the robot is probably best so the network can use RGB cues to learn where they are. -->
-
 ### Stage 2: Pose Estimation from PnP
 
 This stage estimates the camera-to-robot pose using the keypoints detected in the first stage. This pose is equivalent to $$^{R}_{C} T$$, the transform that relates the camera pose to the robot pose. Finding this pose is equivalent to solving the camera calibration problem.
@@ -50,8 +39,6 @@ To solve this, we need (in addition to the detected keypoints) the camera intrin
 ## Synthetic Data Generation
 
 Deep learning requires data --- _lots_ of data. Fortunately, synthetic data are cheap, relatively speaking. Moreover, synthetic data provide exact labels for training a network. To transfer our keypoint detector to reality, sufficient training data are required with enough variation for the network to learn the salient signal within the input images to detect keypoints. We employ two common techniques for facilitating sim2real perceptual transfer: **domain randomization** and **image augmentation**.
-
-<!-- We utilize Unreal Engine 4 as our renderer along with a developmental version of [NDDS](https://github.com/NVIDIA/Dataset_Synthesizer), the NVIDIA Deep learning Dataset Synthesizer, that provides the above randomizations. In particular, this version of NDDS provides the capability for robot control during data capture. We captured images at 640x480 resolution. Our data generation pipeline also captured depth images and object segmentation masks; however, we only train our network using the RGB images. -->
 
 We added robot control to an internal version of [NDDS](https://github.com/NVIDIA/Dataset_Synthesizer), the NVIDIA Deep learning Dataset Synthesizer, to generate our training data. Below are some synthetic image examples from NDDS that are suitable for training the network.
 
@@ -77,10 +64,6 @@ Image augmentation provides image-level noise to increase network robustness and
 - Random adjustment to image brightness and contrast.
 - Random translation, rotation and scaling.
 
-<!-- ### Example Photorealistic Images
-
-<img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_photo_mosaic.png" width="100%"> -->
-
 ## Sim2Real Keypoint Detection
 
 ### Network Training
@@ -100,8 +83,6 @@ Below are some examples of training data for the selected robots. Our network al
 
 Although the network regresses to belief maps, PnP doesn't operate on these belief maps directly. Instead, the belief maps are interpreted to determine where a keypoint is most likely to exist via a peak-finding algorithm. A key assumption in this step is that only one keypoint exists in a particular belief map. First, a Gaussian filter is applied to smoothen the belief map. Then, the intensity peaks that are above a heuristic threshold are identified. Lastly, if multiple peaks are detected, the relative intensity between the maximum and next maximum is compared; if this is above a threshold, the max peak is retained. If the peaks cannot be clearly disambiguated, no keypoint is detected. In practice, this has been effective in cases where only one robot is in the field of view.
 
-<!-- ### Example Keypoint Detection -->
-
 Below are examples of our trained keypoint detector for both synthetic and real images. The same network is used for both the left and right images, demonstrating sim2real perceptual transfer.
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_sim2real_kp.png" width="100%">
@@ -109,18 +90,9 @@ Below are examples of our trained keypoint detector for both synthetic and real 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_baxter_sim2real_kp.png" width="100%">
 *Sim2real transfer for keypoint detection for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulator. Left: synthetic input image. Right: real input image. In both cases, detected keypoints (shown in red) were found from the overlaid belief maps. When available, ground truth keypoints are shown in green.*
 
-<!-- ## Putting it all together: DREAM as Camera Calibration -->
-<!-- ## DREAM as Camera Calibration -->
-<!-- ## Camera Calibration  -->
 ## A DREAM for Better Camera Calibration
 
 Below is a video from one of the real datasets we have released that demonstrates DREAM. Each frame of this video shows the DREAM keypoint detections as well as the projected keypoint frames using the DREAM camera pose estimate for the camera calibration transform. No temporal information is used; DREAM processes each frame independently. Therefore, if the camera were to have been moved or bumped during this sequence, DREAM could still provide a viable calibration solution, which would not be possible with hand-eye calibration. In our paper, we demonstrate that the camera transform from DREAM is comparable to classic hand-eye calibration, therefore suitable for grasping objects that require no more than 2-3 cm of error.
-
-<!-- As we show in our paper, the result -->
-
-<!-- <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_mosaic.png" width="100%" hspace="20px"> -->
-
-<!-- <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_reaching_viz.gif" width="100%" hspace="20px"> -->
 
 <center>
 <video width="100%" src="/assets/vid/2020-06-29/Lee_etal_2020_dream_panda_reaching_viz.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen muted loop controls></video>
@@ -129,8 +101,6 @@ DREAM results for a portion of the Panda-3Cam: RealSense dataset. Left: keypoint
 
 ## Closing Thoughts
 
-<!-- Below are some closing thoughts from our work developing DREAM, including lessons learned for other roboticists working in sim2real for perception. -->
-
 ### Lessons Learned
 
 Transferring robot perception algorithms to reality using only synthetic images is difficult. We provide the following lessons learned for other researchers.
@@ -138,7 +108,6 @@ Transferring robot perception algorithms to reality using only synthetic images 
 1. **Photorealistic textures.** It comes as no surprise that photorealistic models will better facilitate sim2real transfer. However, recall that in our synthetic training data, the color of the robot textures were changed. Some perceptual differences should be fine, so long as they don't change the underlying perception content (e.g., the shape of the manipulator links). For example, the Panda robot has an LED at its base to indicate its operating mode. This LED was not modeled by our renderer, but nonetheless, the keypoint associated near it (at the base) was still detectable.
 
 2. **Judicious restriction of domain randomization.** If the expected use case of the robot is restricted, then it is reasonable to also restrict the degree of domain randomization accordingly. For example, the workstation of the Baxter robot is in front of its torso. We restricted the camera pose randomization so that only the front of the torso was visible. Limiting the domain randomization space helped the network disambiguate between the left and right arms, which appear visually similar, with less training data.
-<!-- Of course, one could extend possible poses, but the (possibly significant) increase in data required for generalization may not be worth it. -->
 
 3. **Belief map interpretability.** Originally, we explored the idea of not training belief maps directly, and instead, let the network learn what belief map representation would be best. For this, we added a softmax layer at the end of the network, and used the keypoint position itself as the training label (instead of the belief map). Sometimes, this yielded intriguing belief maps that appears as if the network was learning an implicit "attention" mechanism. For example, the belief map for the Baxter torso keypoint extended generally around the midsection of Baxter. However, for other cases, the belief maps were not human interpretable, although the detected keypoint position within the belief map was correct. Therefore, we opted to train the network to regress to a particular belief map representation that was inherently interpretable.
 
@@ -149,13 +118,6 @@ We hope that DREAM will be useful for roboticists by providing a more efficient 
 - DREAM was designed under the assumption that no more than one manipulator would exist in an image. However, DREAM can be extended to multiple manipulators similar to DOPE (where the pose of multiple objects can be estimated).
 - DREAM relies on no temporal information --- each frame is processed independently. As a result, the result may have some small variance or "jitter" in both two- and three-dimensions. To accommodate use cases where the roboticist knows the camera will not move (e.g., a very secure and rigid camera mounting), DREAM can be used over multiple frames, which will both improve accuracy and reduce jitter.
 - Not all detected keypoints are equally useful for solving PnP. Therefore, some robot joint configurations may be more "informative" and robust to missed keypoint detections than others. Furthermore, DREAM will inherit the same limitations of PnP, such as degenerate cases if an insufficient number of keypoints are detected.
-
-<!-- ### Open Questions
-
-- How many images are enough? In the work of Deep Object Pose Estimation (DOPE), work that DREAM was strongly influenced by, Tremblay et al. study variation in the size of the dataset. Empirically we found that about 20,000 images worked for a robot at a fixed joint configuration, so more was needed when we needed to vary the joint configuration. It is possible that similar gains could be achieved with less data, although perhaps there is some correlation with the expressivity of the network being used.
-
-- How do you know when the network is "good enough"? Train vs validation -->
-
 
 ## Code and Documentation
 
