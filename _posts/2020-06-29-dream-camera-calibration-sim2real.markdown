@@ -17,7 +17,7 @@ This post describes an approach to camera calibration without fiducial markers t
 <!-- # DREAM: Camera Calibration without Fiducial Markers -->
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_reaching_frame.png" width="100%">
-*DREAM output for the Franka Panda manipulator. Left: keypoint detections with belief map overlay. Right: DREAM as camera calibration. Keypoint frames are projected into the image using the camera pose estimate from DREAM.*
+*DREAM output for the Franka Emika Panda manipulator. Left: keypoint detections with belief map overlay. Right: DREAM as camera calibration. Keypoint frames are projected into the image using the camera pose estimate from DREAM.*
 
 <!-- ## A DREAM of Better Camera Calibration -->
 ## An Overview of DREAM
@@ -27,15 +27,15 @@ DREAM is a two-stage pipeline. The first stage detects keypoints of a manipulato
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_pipeline.png" width="100%">
 *The DREAM pipeline. Stage 1 consists of the first four steps shown in this diagram. Stage 2 is the last step, which outputs the camera transform.*
 
-DREAM is an approach that is enabled by deep learning while _also_ leveraging classical algorithms. As an alternative to directly regressing to pose, such as in PoseCNN (Xiang et al.), vision-based geometry algorithms, such as perspective-n-point (PnP), provide a principled method for estimating pose from keypoint correspondences if the camera intrinsics are available, as in our case. Therefore, we need not apply deep learning to the entire pipeline to regress directly to pose, which has the risk of "baking in" the camera intrinsics and limits how well the algorithm generalizes to other cameras. Geometric algorithms do not have this problem and will transfer well to other cameras. (In fact, for our work, we demonstrated this for three different cameras.) Thus, we utilize deep learning for what it's excellent at --- image detection --- and the rest of the problem is thereafter solved using a geometric algorithm.
+DREAM is an approach that is enabled by deep learning while _also_ leveraging classical algorithms. As an alternative to directly regressing to pose, such as in PoseCNN (Xiang et al.), vision-based geometry algorithms, such as perspective-n-point (PnP), provide a principled method for estimating pose from keypoint correspondences if the camera intrinsics are available, as in our case. Therefore, we need not apply deep learning to the entire pipeline to regress directly to pose, which has the risk of "baking in" the camera intrinsics and limits how well the algorithm generalizes to other cameras. Geometric algorithms do not have this problem and will transfer well to other cameras. (In fact, for our work, we demonstrated this for three different cameras.) Thus, we utilize deep learning where it excels --- image detection --- and the rest of the problem is thereafter solved using a geometric algorithm.
 
 This post will largely focus on the first stage, and how we achieved sim2real transfer for keypoint detection using only synthetic data.
 
 ### Stage 1: Keypoint Detection
 
-This stage detects manipulator **keypoints** within a single RGB image. Keypoints are salient points defined on the robot that are useful for estimating the camera-to-robot pose. The engine that drives this stage is a deep neural network that uses an encoder-decoder architecture. The network is trained to output a **belief map** for each robot keypoint, which is then interpreted to determine the pixel coordinates of that keypoint in the input image. We will discuss this more thoroughly later in this post.
+This stage detects manipulator **keypoints** within a single RGB image. Keypoints are salient points defined on the robot that are useful for estimating the camera-to-robot pose. The engine that drives this stage is a deep neural network with an encoder-decoder architecture. The network is trained to output a **belief map** for each robot keypoint, which is then interpreted to determine the pixel coordinates of that keypoint in the input image. We will discuss this more thoroughly later in this post.
 
-DREAM requires the keypoints to be specified by the user at training time. In our work, we chose the keypoints at the positions of the joints based on the robot URDF (Unified Robot Description Format) model. In this case, the number of keypoints will range from 7 to about 20, depending on the model. In principle, these keypoints can exist anywhere on the robot --- including "inside" the robot, as was the case for the DREAM models that we trained for ICRA. Additional keypoints can be added to provide slightly better results in terms of accuracy (with diminishing returns) and robustness, particularly when some keypoints are occluded or otherwise not detected.
+DREAM requires the keypoints to be specified by the user at training time. In our work, keypoints were chosen at the positions of the joints based on the robot URDF (Unified Robot Description Format) model. In this case, the number of keypoints will range from 7 to about 20, depending on the model. In principle, these keypoints can exist anywhere on the robot --- including "inside" the robot, as was the case for the DREAM models that were trained for ICRA. Additional keypoints can be added to provide slightly better results in terms of accuracy (with diminishing returns) and robustness, particularly when some keypoints are occluded or otherwise not detected.
 
 <!-- Other approaches include defining the keypoints at the bounding box vertices (as in DOPE). However, from robot proprioception, we know where the keypoints are, so defining them on the robot is probably best so the network can use RGB cues to learn where they are. -->
 
@@ -49,7 +49,7 @@ To solve this, we need (in addition to the detected keypoints) the camera intrin
 
 ## Synthetic Data Generation
 
-Deep learning requires data --- _lots_ of data. Fortunately, synthetic data are cheap, relatively speaking. Moreover, synthetic data provide exact labels for training a network. To transfer our keypoint detector to reality, we require sufficient training data with enough variation so that the network learns the salient signal within the input images to detect keypoints. We employ two common techniques for facilitating sim2real perceptual transfer: **domain randomization** and **image augmentation**.
+Deep learning requires data --- _lots_ of data. Fortunately, synthetic data are cheap, relatively speaking. Moreover, synthetic data provide exact labels for training a network. To transfer our keypoint detector to reality, sufficient training data are required with enough variation for the network to learn the salient signal within the input images to detect keypoints. We employ two common techniques for facilitating sim2real perceptual transfer: **domain randomization** and **image augmentation**.
 
 <!-- We utilize Unreal Engine 4 as our renderer along with a developmental version of [NDDS](https://github.com/NVIDIA/Dataset_Synthesizer), the NVIDIA Deep learning Dataset Synthesizer, that provides the above randomizations. In particular, this version of NDDS provides the capability for robot control during data capture. We captured images at 640x480 resolution. Our data generation pipeline also captured depth images and object segmentation masks; however, we only train our network using the RGB images. -->
 
@@ -58,15 +58,15 @@ We added robot control to an internal version of [NDDS](https://github.com/NVIDI
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_panda.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_kuka.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_synth_dr_baxter.png" width="100%">
-*Synthetic, domain-randomized images for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators.*
+*Synthetic, domain-randomized images for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators.*
 
 ### Domain Randomization
 
-Broadly speaking, domain randomization changes the _content_ of an image to provide a diversity of examples to facilitate generalization. For example, if the network only saw examples of the keypoints at the same robot joint configuration, we wouldn't know if it could extrapolate to other joint configurations. To that end, we provided domain randomizations in factors that could reasonably change in real settings:
+Broadly speaking, domain randomization changes the _content_ of an image to provide a diversity of examples to facilitate generalization. For example, if the network only saw examples of the keypoints at the same robot joint configuration, we wouldn't know if it could generalize to other joint configurations. To that end, we provided domain randomizations in factors that could reasonably change in real settings:
 - The camera pose is randomly chosen within a hemispherical shell with the robot at the center. The camera view is slightly perturbed so that the robot is not always centered within the image.
 - The robot joint configuration is randomly chosen. Specifically, each joint has a uniform angle distribution that is chosen independently for each joint. This, along with perturbing the camera view, means that some images will have keypoints that are outside the field of view.
 - The lighting of the scene is varied in position, intensity, and color.
-- Variation in scene background. We randomly choose a pattern or an image from the COCO dataset (Lin et al.).
+- The scene background is randomly chosen to be a pattern or an image from the COCO dataset (Lin et al.).
 - Addition of distractor objects from the YCB dataset (Calli et al.).
 - The color of the robot mesh was randomly chosen.
 
@@ -85,36 +85,36 @@ Image augmentation provides image-level noise to increase network robustness and
 
 ### Network Training
 
-Now that we've generated our training data, we can now train the network. We utilize the supervised learning paradigm for training the neural network: provide the network data samples consisting of the input data (RGB image) and the label it should output (one belief map per keypoint).
+Now that we've generated our training data, the neural network can be trained through supervised learning. We provide the network data samples consisting of the input data (RGB image) and the label it should output (one belief map per keypoint).
 
-What should these belief maps look like? Similar to DOPE, we define the belief map for a keypoint to be a Gaussian intensity distribution at a given keypoint's pixel location. If a keypoint is not in the field of view, the belief map label will be completely zero.
+What should these belief maps look like? Similar to DOPE, the belief map for a keypoint is defined as a Gaussian intensity distribution at a given keypoint's pixel location. If a keypoint is not in the field of view, the belief map label will be completely zero.
 
-Below are some examples of training data for the robots we trained for ICRA. Our network also allows the belief map output resolution to be specified via the decoder resolution. The Panda and Baxter belief maps below are for a quarter "Q" resolution, whereas the iiwa7 belief maps use a half "H" resolution.
+Below are some examples of training data for the selected robots. Our network also allows the belief map output resolution to be specified via the decoder resolution. The Panda and Baxter belief maps below are for a quarter "Q" resolution, whereas the iiwa7 belief maps use a half "H" resolution.
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_synth_train.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_kuka_synth_train.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_baxter_synth_train.png" width="100%">
-*Training data examples for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators. Left: RGB image as network input. Right: keypoint belief maps (shown here as flattened) as network training label.*
+*Training data examples for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulators. Left: RGB image as network input. Right: keypoint belief maps (shown here as flattened) as network training label.*
 
 ### Network Inference: Interpreting Belief Maps
 
-Although the network regresses to belief maps, PnP doesn't operate on these belief maps directly. Instead, we interpret these belief maps to determine where a keypoint is most likely to exist via a peak-finding algorithm. A key assumption in this step is that we expect only one keypoint to exist in a particular belief map. We first apply a Gaussian filter to smoothen the belief map, and then we identify the intensity peaks that are above a heuristic threshold. Additionally, if multiple peaks are detected, we assess the relative intensity between the maximum and next maximum; if this is above a threshold, we retain the max peak. If we cannot clearly disambiguate the peaks, no keypoint is detected. In practice, this has been effective for our use case where only one robot is in the field of view.
+Although the network regresses to belief maps, PnP doesn't operate on these belief maps directly. Instead, the belief maps are interpreted to determine where a keypoint is most likely to exist via a peak-finding algorithm. A key assumption in this step is that only one keypoint exists in a particular belief map. First, a Gaussian filter is applied to smoothen the belief map. Then, the intensity peaks that are above a heuristic threshold are identified. Lastly, if multiple peaks are detected, the relative intensity between the maximum and next maximum is compared; if this is above a threshold, the max peak is retained. If the peaks cannot be clearly disambiguated, no keypoint is detected. In practice, this has been effective in cases where only one robot is in the field of view.
 
 <!-- ### Example Keypoint Detection -->
 
-Below are examples of our trained keypoint detector working on both synthetic and real images. The same network is used for both the left and right images, demonstrating sim2real perceptual transfer.
+Below are examples of our trained keypoint detector for both synthetic and real images. The same network is used for both the left and right images, demonstrating sim2real perceptual transfer.
 
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_panda_sim2real_kp.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_kuka_sim2real_kp.png" width="100%">
 <img align="center" src="/assets/img/2020-06-29/Lee_etal_2020_dream_baxter_sim2real_kp.png" width="100%">
-*Sim2real transfer for keypoint detection for the Franka Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulator. Left: synthetic input image. Right: real input image. In both cases, detected keypoints (shown in red) were found from the overlaid belief maps. When available, ground truth keypoints are shown in green.*
+*Sim2real transfer for keypoint detection for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter manipulator. Left: synthetic input image. Right: real input image. In both cases, detected keypoints (shown in red) were found from the overlaid belief maps. When available, ground truth keypoints are shown in green.*
 
 <!-- ## Putting it all together: DREAM as Camera Calibration -->
 <!-- ## DREAM as Camera Calibration -->
 <!-- ## Camera Calibration  -->
 ## A DREAM for Better Camera Calibration
 
-Below is a video from one of the real datasets we have released that demonstrates DREAM. Each frame of this video shows the DREAM keypoint detections as well as the projected keypoint frames using the DREAM camera pose estimate for the camera calibration transform. No temporal information is used; DREAM processes each frame independently. Therefore, if the camera were to have been moved to bumped during this sequence, DREAM could still provide a viable calibration solution, which would not be possible using hand-eye calibration. In our paper, we demonstrate that the camera transform from DREAM is comparable to classic hand-eye calibration, therefore suitable for grasping objects that require no more than 2-3 cm of error.
+Below is a video from one of the real datasets we have released that demonstrates DREAM. Each frame of this video shows the DREAM keypoint detections as well as the projected keypoint frames using the DREAM camera pose estimate for the camera calibration transform. No temporal information is used; DREAM processes each frame independently. Therefore, if the camera were to have been moved or bumped during this sequence, DREAM could still provide a viable calibration solution, which would not be possible with hand-eye calibration. In our paper, we demonstrate that the camera transform from DREAM is comparable to classic hand-eye calibration, therefore suitable for grasping objects that require no more than 2-3 cm of error.
 
 <!-- As we show in our paper, the result -->
 
@@ -135,7 +135,7 @@ DREAM results for a portion of the Panda-3Cam: RealSense dataset. Left: keypoint
 
 Transferring robot perception algorithms to reality using only synthetic images is difficult. We provide the following lessons learned for other researchers.
 
-1. **Photorealistic textures.** It comes as no surprise that photorealistic models will better facilitate sim2real transfer. However, recall that in our synthetic training data, the color of the robot textures were changed. Some perceptual differences should be fine, so long as they don't change the underlying perception content (e.g., the shape of the manipulator links). For example, the Franka Panda robot has an LED at its base to indicate its operating mode. This LED was not modeled by our renderer, but nonetheless, the keypoint associated near it (at the base) was still detectable.
+1. **Photorealistic textures.** It comes as no surprise that photorealistic models will better facilitate sim2real transfer. However, recall that in our synthetic training data, the color of the robot textures were changed. Some perceptual differences should be fine, so long as they don't change the underlying perception content (e.g., the shape of the manipulator links). For example, the Panda robot has an LED at its base to indicate its operating mode. This LED was not modeled by our renderer, but nonetheless, the keypoint associated near it (at the base) was still detectable.
 
 2. **Judicious restriction of domain randomization.** If the expected use case of the robot is restricted, then it is reasonable to also restrict the degree of domain randomization accordingly. For example, the workstation of the Baxter robot is in front of its torso. We restricted the camera pose randomization so that only the front of the torso was visible. Limiting the domain randomization space helped the network disambiguate between the left and right arms, which appear visually similar, with less training data.
 <!-- Of course, one could extend possible poses, but the (possibly significant) increase in data required for generalization may not be worth it. -->
@@ -159,7 +159,7 @@ We hope that DREAM will be useful for roboticists by providing a more efficient 
 
 ## Code and Documentation
 
-The DREAM code, including the core library and a ROS node, is available on [GitHub](https://github.com/NVlabs/DREAM). We have also released pre-trained models for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter. These models and the datasets we used to quantify our results are available through the [NVIDIA project site](https://research.nvidia.com/publication/2020-03_DREAM).
+The DREAM code, including the core library and a ROS node, is available on [GitHub](https://github.com/NVlabs/DREAM). We have also released pre-trained models for the Franka Emika Panda, KUKA iiwa7, and Rethink Robotics Baxter. These models and the datasets we used to quantify our results are also available through the [NVIDIA project site](https://research.nvidia.com/publication/2020-03_DREAM).
 
 We highly encourage roboticists to pass on fiducial markers and try our approach the next time you need to calibrate your camera for your vision-based manipulation tasks.
 
